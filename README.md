@@ -7,6 +7,10 @@ and GCHP/GEOS-Chem ingestion.
 
 It is intentionally not a model and not an I/O framework.
 
+The contracts are designed so the same physical column can eventually drive both fast
+parameterized radiation and high-fidelity multi-stream calculations. Solver settings,
+spectral optics, fluxes, and heating rates remain owned by radiation packages.
+
 ## Design principles
 
 - Physical meaning is part of the type: dry VMR, wet VMR, layer mass, and number density

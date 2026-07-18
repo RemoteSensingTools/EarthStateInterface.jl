@@ -58,6 +58,27 @@ uses one constant gravity. `HelmertLatitudeGravity` reproduces that choice. The 
 also exposes altitude-only and latitude-plus-altitude models instead of baking either
 retrieval or reanalysis practice into `AtmosphericColumn`.
 
+### Future radiation-intercomparison criterion
+
+An RRTMGP-versus-vSmartMOM experiment is a future use case, not a current package
+milestone. The interface should nevertheless make it straightforward for one physical
+column to drive both solvers. In particular:
+
+- neither solver's state container or spectral representation becomes the shared state;
+- layer and interface quantities retain unambiguous orientation and units;
+- gas, aerosol, and future cloud inputs describe physical state rather than derived
+  two-stream or multi-stream optical properties;
+- gravity, layer reduction, and concentration-basis choices remain explicit, allowing a
+  comparison to hold them fixed;
+- adapters may independently select correlated-k, lookup-table, or line-by-line optics
+  without changing the source atmospheric column.
+
+A future comparison should first hold spectral layer optics fixed while varying only the
+radiative-transfer solver and stream count. More detailed spectroscopy, phase functions,
+and cloud microphysics can then be introduced separately. Flux profiles, heating rates,
+solver configuration, and spectral quadrature are radiative-transfer outputs or controls;
+they do not belong in `EarthStateInterface` merely to support that experiment.
+
 ## Hydrostatic air-column amounts
 
 For total pressure thickness `Δp` and specific humidity `q`, the diagnosed moist-air
