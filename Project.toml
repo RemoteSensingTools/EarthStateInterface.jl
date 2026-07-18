@@ -1,0 +1,21 @@
+name = "EarthStateInterface"
+uuid = "64a64d47-2fba-48e3-aaf6-c58fb7044f79"
+authors = ["Christian Frankenberg and contributors"]
+version = "0.1.0"
+
+[weakdeps]
+NCDatasets = "85f8d34a-cbdd-5861-8df4-14fed0d494ab"
+
+[extensions]
+EarthStateInterfaceNCDatasetsExt = "NCDatasets"
+
+[compat]
+NCDatasets = "0.14"
+julia = "1.10"
+
+[extras]
+NCDatasets = "85f8d34a-cbdd-5861-8df4-14fed0d494ab"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["NCDatasets", "Test"]

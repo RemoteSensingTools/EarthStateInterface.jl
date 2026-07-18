@@ -1,0 +1,6 @@
+/Manifest.toml
+*.cov
+*.mem
+*.jl.cov
+*.jl.mem
+docs/build/
