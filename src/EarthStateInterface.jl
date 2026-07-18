@@ -16,6 +16,7 @@ include("vertical_coordinates.jl")
 include("constituents.jl")
 include("aerosols.jl")
 include("atmospheric_columns.jl")
+include("air_columns.jl")
 include("validation.jl")
 include("layer_reduction.jl")
 include("optical_reduction.jl")
@@ -43,6 +44,11 @@ export pressure_coordinate, temperature, specific_humidity
 export dry_air_mass, dry_air_column_moles, layer_volume
 export trace_gases, aerosols, metadata
 export species_names, constituent, has_constituent
+
+export GravityModel, ConstantGravity, HelmertLatitudeGravity
+export SphericalAltitudeGravity, SomiglianaAltitudeGravity
+export gravity, AirColumnAmounts, air_column_amounts
+export dry_air_moles, water_vapor_moles, wet_air_moles, layer_gravity
 
 export validate_column, validate_sectional_aerosols
 

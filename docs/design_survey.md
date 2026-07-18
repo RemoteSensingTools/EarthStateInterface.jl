@@ -52,6 +52,33 @@ Patterns not adopted:
 
 RRTMGP remains a solver adapter target, not the definition of the shared contract.
 
+RRTMGP's dry-column kernel does provide one useful parity target: when latitude is
+available it uses the Helmert approximation `g = 9.80665 - 0.02586 cos(2φ)` and otherwise
+uses one constant gravity. `HelmertLatitudeGravity` reproduces that choice. The shared API
+also exposes altitude-only and latitude-plus-altitude models instead of baking either
+retrieval or reanalysis practice into `AtmosphericColumn`.
+
+## Hydrostatic air-column amounts
+
+For total pressure thickness `Δp` and specific humidity `q`, the diagnosed moist-air
+mass per area is `Δp/g`. Water and dry-air mass are then `q Δp/g` and
+`(1-q) Δp/g`, respectively. Dividing each by its own molar mass gives water-vapor and
+dry-air moles; their sum is the total wet-air amount. This direct mass split avoids the
+common ambiguity between wet- and dry-basis water VMR.
+
+Gravity is a diagnostic strategy selected by multiple dispatch:
+
+- `ConstantGravity` matches the usual reanalysis convention;
+- `HelmertLatitudeGravity` isolates latitude and matches RRTMGP;
+- `SphericalAltitudeGravity` isolates inverse-square altitude dependence;
+- `SomiglianaAltitudeGravity` combines WGS 84 surface gravity with an explicitly
+  documented inverse-square altitude continuation.
+
+Altitude-aware calculations require geometric layer-center height. The interface does not
+silently treat geopotential height as geometric altitude. The pressure state itself remains
+independent of the selected gravity diagnostic, so the same column can be compared under
+all four assumptions.
+
 ## GCHP / GEOS-Chem
 
 A useful GCHP column can carry:

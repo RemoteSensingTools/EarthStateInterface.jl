@@ -18,6 +18,8 @@ It is intentionally not a model and not an I/O framework.
 - State-space and optics-space reduction are distinct APIs.
 - External packages can implement the accessor contract for their own storage; they do
   not have to inherit from a package-owned state hierarchy.
+- Hydrostatic air-column diagnostics dispatch on an explicit gravity model; using a
+  reanalysis constant or retrieval-style latitude/altitude correction is never implicit.
 
 ## Atmospheric column
 
@@ -35,6 +37,30 @@ column = AtmosphericColumn(
     ),
 )
 ```
+
+## Gravity-aware dry and wet columns
+
+Specific humidity and pressure thickness are sufficient to diagnose three distinct
+amounts per layer:
+
+```julia
+amounts = air_column_amounts(
+    column,
+    SomiglianaAltitudeGravity();
+    latitude = 34.2,                         # geodetic degrees
+    altitude = [30_000.0, 10_000.0, 1_000.0], # geometric layer centers [m]
+)
+
+dry_air_moles(amounts)       # mol m⁻²
+water_vapor_moles(amounts)   # mol m⁻²
+wet_air_moles(amounts)       # their sum: the complete moist mixture
+```
+
+Available models isolate each assumption: `ConstantGravity`,
+`HelmertLatitudeGravity` (the RRTMGP latitude formula),
+`SphericalAltitudeGravity`, and `SomiglianaAltitudeGravity`. See
+[`examples/compare_gravity_models.jl`](examples/compare_gravity_models.jl) for a direct
+impact comparison.
 
 ## Two physically different layer-reduction routes
 
